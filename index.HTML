@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 LuxGuard | Smart Home Security</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --primary-dark: #002171;
+            --primary-light: #5472d3;
+            --secondary: #ffd700;
+            --accent: #c2185b;
+            --danger: #d32f2f;
+            --success: #388e3c;
+            --warning: #f57c00;
+            --white: #ffffff;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --gray: #64748b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--white);
+            color: var(--dark-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--secondary), #ffed4e);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary-dark);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            transform: rotate(45deg);
+        }
+        
+        .logo i {
+            transform: rotate(-45deg);
+        }
+        
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--white), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo-text .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            color: var(--white);
+        }
+        
+        /* Connection Setup */
+        .setup-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .setup-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--primary-light);
+            text-align: center;
+        }
+        
+        .setup-icon {
+            font-size: 4rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .setup-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .setup-subtitle {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .ip-display {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px dashed var(--primary-light);
+        }
+        
+        .ip-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .ip-address {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-family: monospace;
+            margin: 1rem 0;
+        }
+        
+        .setup-steps {
+            text-align: left;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 15px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .step-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content p {
+            color: var(--gray);
+        }
+        
+        .qr-code {
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #f1f5f9, #e2e8f0);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .footer-section p {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            margin-top: 1rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--secondary);
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            animation: pulseDot 2s infinite;
+        }
+        
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content, .setup-container, .footer-content {
+                padding: 0 1.5rem;
+            }
+            
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+            
+            .setup-card {
+                padding: 2rem;
+            }
+            
+            .ip-address {
+                font-size: 1.8rem;
+            }
+            
+            .setup-icon {
+                font-size: 3rem;
+            }
+            
+            .setup-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>LuxGuard Security</h1>
+                    <p class="tagline">Premium Smart Home Protection System</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Connection Setup -->
+    <main class="setup-container">
+        <div class="setup-card">
+            <div class="setup-icon">
+                <i class="fas fa-microchip"></i>
+            </div>
+            
+            <h2 class="setup-title">Connect to Your ESP32 System</h2>
+            <p class="setup-subtitle">Follow these steps to access your smart home security system</p>
+            
+            <div class="ip-display">
+                <div class="ip-label">ESP32 IP Address</div>
+                <div class="ip-address" id="esp32Ip">192.168.x.xxx</div>
+                <p style="color: var(--gray); font-size: 0.9rem;">
+                    This is the address of your ESP32 on your local network
+                </p>
+            </div>
+            
+            <div class="setup-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Find Your ESP32 IP</h4>
+                        <p>Check the Serial Monitor in Arduino IDE to see the IP address printed during startup.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Enter the IP Address</h4>
+                        <p>Type the IP address below or click the auto-detect button if you're on the same network.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Access the System</h4>
+                        <p>Click "Connect to System" to open the control panel and start monitoring.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- IP Input -->
+            <div style="margin: 2rem 0; text-align: center;">
+                <input type="text" 
+                       id="ipInput" 
+                       placeholder="Enter ESP32 IP (e.g., 192.168.1.100)" 
+                       style="width: 100%; max-width: 400px; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; margin-bottom: 1rem;">
+                
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="connectToSystem()" 
+                            style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: var(--transition);">
+                        <i class="fas fa-plug"></i> Connect to System
+                    </button>
+                    
+                    <button onclick="autoDetectIP()" 
+                            style="background: var(--light-bg); color: var(--primary); border: 2px solid var(--primary-light); padding: 1rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: var(--transition);">
+                        <i class="fas fa-search"></i> Auto Detect
+                    </button>
+                </div>
+            </div>
+            
+            <!-- QR Code for Mobile -->
+            <div class="qr-code">
+                <div class="qr-placeholder">
+                    <div style="text-align: center;">
+                        <i class="fas fa-qrcode" style="font-size: 3rem; margin-bottom: 1rem; color: var(--gray);"></i>
+                        <div>Scan with phone camera</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.5rem;">to connect</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LuxGuard</h3>
+                <p>Premium smart home security system with real-time monitoring, automated alerts, and remote control capabilities.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>System Features</h3>
+                <p>• Real-time room monitoring</p>
+                <p>• Telegram notifications</p>
+                <p>• Security alerts</p>
+                <p>• Admin controls</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connection Status</h3>
+                <div class="connection-status">
+                    <div class="status-dot"></div>
+                    <span id="connectionStatus">Ready to Connect</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 LuxGuard Security System. All rights reserved. | Version 4.0</p>
+        </div>
+    </footer>
+
+    <script>
+        // Store the ESP32 IP
+        let esp32IP = '';
+        
+        // Update connection status
+        function updateConnectionStatus(status, type = 'info') {
+            const statusElem = document.getElementById('connectionStatus');
+            statusElem.textContent = status;
+            
+            const dot = document.querySelector('.status-dot');
+            if(type === 'success') {
+                dot.style.background = '#388e3c';
+            } else if(type === 'error') {
+                dot.style.background = '#d32f2f';
+            } else {
+                dot.style.background = '#ffd700';
+            }
+        }
+        
+        // Auto-detect ESP32 on local network
+        async function autoDetectIP() {
+            updateConnectionStatus('Scanning network...', 'warning');
+            
+            const input = document.getElementById('ipInput');
+            input.placeholder = 'Scanning...';
+            
+            // Try common local IP ranges
+            const commonRanges = [
+                '192.168.1.',  // Most common
+                '192.168.0.',  // Second most common
+                '10.0.0.',     // Business networks
+                '172.16.0.'    // Larger networks
+            ];
+            
+            let found = false;
+            
+            for(let range of commonRanges) {
+                // Test first 10 addresses in each range
+                for(let i = 1; i <= 10; i++) {
+                    const testIP = range + i;
+                    
+                    try {
+                        const response = await fetchWithTimeout(`http://${testIP}/api/status`, 100);
+                        if(response.ok) {
+                            esp32IP = testIP;
+                            input.value = testIP;
+                            updateConnectionStatus('System detected!', 'success');
+                            found = true;
+                            showToast(`Found system at ${testIP}`, 'success');
+                            return;
+                        }
+                    } catch(err) {
+                        // Continue scanning
+                    }
+                }
+            }
+            
+            if(!found) {
+                updateConnectionStatus('System not found', 'error');
+                input.placeholder = 'Enter IP manually';
+                showToast('Could not auto-detect system. Please enter IP manually.', 'error');
+            }
+        }
+        
+        // Helper function for timeout fetch
+        async function fetchWithTimeout(url, timeout) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            
+            try {
+                const response = await fetch(url, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                return response;
+            } catch(err) {
+                clearTimeout(timeoutId);
+                throw err;
+            }
+        }
+        
+        // Connect to the system
+        async function connectToSystem() {
+            const input = document.getElementById('ipInput');
+            esp32IP = input.value.trim();
+            
+            if(!esp32IP) {
+                showToast('Please enter an IP address', 'error');
+                return;
+            }
+            
+            // Validate IP format
+            const ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if(!ipPattern.test(esp32IP)) {
+                showToast('Please enter a valid IP address', 'error');
+                return;
+            }
+            
+            updateConnectionStatus('Connecting...', 'warning');
+            
+            try {
+                const response = await fetchWithTimeout(`http://${esp32IP}/api/status`, 2000);
+                
+                if(response.ok) {
+                    updateConnectionStatus('Connected!', 'success');
+                    
+                    // Store IP in localStorage for future use
+                    localStorage.setItem('luxguard_ip', esp32IP);
+                    
+                    // Redirect to the system interface
+                    window.location.href = `http://${esp32IP}/`;
+                } else {
+                    updateConnectionStatus('Connection failed', 'error');
+                    showToast('System not responding at this address', 'error');
+                }
+            } catch(err) {
+                updateConnectionStatus('Connection failed', 'error');
+                showToast('Cannot connect to system. Check IP and network.', 'error');
+            }
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#388e3c' : type === 'error' ? '#d32f2f' : '#0d47a1'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                animation: slideUp 0.3s ease-out;
+            `;
+            
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-times-circle' : 'fa-info-circle'}" 
+                   style="margin-right: 0.75rem;"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            
+            @keyframes slideDown {
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Check for saved IP on page load
+        window.addEventListener('load', () => {
+            const savedIP = localStorage.getItem('luxguard_ip');
+            if(savedIP) {
+                document.getElementById('ipInput').value = savedIP;
+                esp32IP = savedIP;
+                updateConnectionStatus('Saved IP loaded', 'success');
+            }
+        });
+        
+        // Allow Enter key to trigger connection
+        document.getElementById('ipInput').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                connectToSystem();
+            }
+        });
+    </script>
+</body>
+</html>
